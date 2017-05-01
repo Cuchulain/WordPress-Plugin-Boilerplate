@@ -73,7 +73,7 @@ class Plugin_Name_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'assets/css/plugin-name-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +96,62 @@ class Plugin_Name_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'assets/js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+
+	}
+
+	/**
+	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_plugin_admin_menu()
+	{
+
+		if (!defined('TORETMENU')) {
+
+			add_menu_page(
+				__('Toret plugins', $this->plugin_name),
+				__('Toret plugins', $this->plugin_name),
+				'manage_options',
+				'toret-plugins',
+				array($this, 'display_toret_plugins_admin_page'),
+				plugins_url('assets/images/t-icon.png', __FILE__)
+			);
+
+			define('TORETMENU', true);
+		}
+
+
+		add_submenu_page(
+			'toret-plugins',
+			__('WordPress Plugin Boilerplate', $this->plugin_name),
+			__('WordPress Plugin Boilerplate', $this->plugin_name),
+			'manage_options',
+			$this->plugin_name,
+			array($this, 'display_plugin_admin_page')
+		);
+
+	}
+
+	/**
+	 * Render the settings page for all plugins
+	 *
+	 * @since    1.0.0
+	 */
+	public function display_toret_plugins_admin_page()
+	{
+		include_once __DIR__ . '/partials/plugin-name-toret-display.php';
+	}
+
+	/**
+	 * Render the settings page for this plugin.
+	 *
+	 * @since    1.0.0
+	 */
+	public function display_plugin_admin_page()
+	{
+		include_once __DIR__ . '/partials/plugin-name-admin-display.php';
 
 	}
 
